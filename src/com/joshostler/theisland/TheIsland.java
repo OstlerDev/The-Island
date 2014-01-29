@@ -57,27 +57,8 @@ public class TheIsland implements Runnable, GameWindowCallback {
 		window.setTitle("Does this even work?");
 		
 		window.startRendering();
-		
-		//load map with renderer
-		
-		// Load Entities
-		entities.clear();
-		
-		tile = new TileStone(0,0);
-		tiles.add(tile);
 	
 		run();
-	}
-	
-	public GameWindow getGameWindow() {
-		if (window == null){
-			window = new GameWindow();
-		}
-		return window;
-	}
-
-	public TheIsland getGame(){
-		return game;
 	}
 	
 	public void run() {
@@ -115,6 +96,7 @@ public class TheIsland implements Runnable, GameWindowCallback {
 	
 	private void render() {
 		
+		
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
@@ -123,6 +105,11 @@ public class TheIsland implements Runnable, GameWindowCallback {
 		if (callback != null) {
 			callback.frameRendering();
 		}
+		
+		tile = new TileStone(0,0);
+		tiles.add(tile);
+		
+		window.setTitle("Swag");
 		
 		for(int i = 0; i < tiles.size(); i++){
 			Tile t = (Tile) tiles.get(i);
