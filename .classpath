@@ -2,12 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry exported="true" kind="lib" path="/Volumes/Mac HDD/Users/Josh/Programming/Java/The Island/lib/jars/slick-util.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Volumes/Mac HDD/Users/Josh/Programming/Java/The Island/lib/jars/lwjgl_util.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Volumes/Mac HDD/Users/Josh/Programming/Java/The Island/lib/jars/lwjgl.jar">
+	<classpathentry kind="lib" path="lib/jars/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="lib/jars/lwjgl.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="The Island/lib/navives-mac"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jars/slick-util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

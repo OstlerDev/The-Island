@@ -7,6 +7,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import com.joshostler.theisland.graphics.tile.TileStone;
+
 public class GameWindow {
 	
 	private GameWindowCallback callback;
@@ -19,9 +21,14 @@ public class GameWindow {
 
 	private TextureLoader textureLoader;
   
-	private String title;
+	private String title = "The Island";
 	
 	public GameWindow() {
+		try {
+			Display.create();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	TextureLoader getTextureLoader() {
@@ -29,7 +36,7 @@ public class GameWindow {
 	}
 	
 	public void setTitle(String title) {
-	    this.title = title;
+	    //this.title = title;
 	    if(Display.isCreated()) {
 	    	Display.setTitle(title);
 	    }
@@ -64,32 +71,28 @@ public class GameWindow {
 		return false;
 	}
 	
-	public void startRendering() {
-		try {                
-			setDisplayMode();
-			Display.create();
-			
-			// grab the mouse, dont want that hideous cursor when we're playing!
-			Mouse.setGrabbed(true);
+	public void startRendering() throws LWJGLException {
+		setDisplayMode();
+		//Display.create();
+		
+		// grab the mouse, dont want that hideous cursor when we're playing!
+		Mouse.setGrabbed(true);
   
-			// enable textures since we're going to use these for our sprites
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			
-			// disable the OpenGL depth test since we're rendering 2D graphics
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			GL11.glLoadIdentity();
-			
-			GL11.glOrtho(0, width, height, 0, -1, 1);
-			
-			textureLoader = new TextureLoader();
-			
-			if(callback != null) {
-				callback.initialise();
-			}
-		} catch (LWJGLException le) {
-			callback.windowClosed();
+		// enable textures since we're going to use these for our sprites
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		
+		// disable the OpenGL depth test since we're rendering 2D graphics
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		
+		GL11.glOrtho(0, width, height, 0, -1, 1);
+		
+		textureLoader = new TextureLoader();
+		
+		if(callback != null) {
+			callback.initialise();
 		}
     
 		gameLoop();
@@ -100,7 +103,33 @@ public class GameWindow {
 	}
   
 	private void gameLoop() {
+		long lastTime = System.nanoTime();
+		long timer = System.currentTimeMillis();
+		final double ns = 1000000000.0 / 60.0;
+		double delta = 0;
+		int frames = 0;
+		int updates = 0;
+		
 		while (gameRunning) {
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+			if (delta >= 1) {
+				//this.update();
+				updates++;
+				delta--;
+			}
+			
+			//this.render();
+			frames++;
+
+			if (System.currentTimeMillis() - timer > 1000) {
+				timer += 1000;
+				setTitle(title + "  |  " + updates + " ups, " + frames + " fps");
+				updates = 0;
+				frames = 0;
+			}
+			
 			// clear screen
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -110,6 +139,9 @@ public class GameWindow {
 			if (callback != null) {
 				callback.frameRendering();
 			}
+			
+			TileStone tile = new TileStone(0,0);
+			tile.draw();
 			
 			// update window contents
 			Display.update();
