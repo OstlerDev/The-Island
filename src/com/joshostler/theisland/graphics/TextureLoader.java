@@ -90,11 +90,8 @@ public class TextureLoader {
         Texture tex = (Texture) table.get(resourceName);
         
         if (tex != null) {
-        	System.out.println("Texture is not Null!");
             return tex;
         }
-
-    	System.out.println("Texture is Null!");
     	
         tex = getTexture(resourceName,
                          GL11.GL_TEXTURE_2D, // target
@@ -135,6 +132,9 @@ public class TextureLoader {
         GL11.glBindTexture(target, textureID); 
  
         BufferedImage bufferedImage = loadImage(resourceName); 
+        if (bufferedImage == null)
+        	System.out.println("Buffered Image is null");
+        
         texture.setWidth(bufferedImage.getWidth());
         texture.setHeight(bufferedImage.getHeight());
         
@@ -252,6 +252,9 @@ public class TextureLoader {
         }
         
         BufferedImage bufferedImage = ImageIO.read(new BufferedInputStream(getClass().getClassLoader().getResourceAsStream(ref))); 
+        
+        if (bufferedImage == null)
+        	throw new NullPointerException("Buffered image for " + ref + " was unable to be read, please check the file permissions.");
  
         return bufferedImage;
     }

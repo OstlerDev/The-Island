@@ -18,7 +18,7 @@ public class Sprite {
 	
 	 public Sprite (GameWindow gameWindow, String ref){
 		 try {
-			 texture = gameWindow.getTextureLoader().getTexture("stone.png");
+			 texture = gameWindow.getTextureLoader().getTexture(ref);
 			 
 			 width = texture.getImageWidth();
 			 height = texture.getImageHeight();
@@ -37,13 +37,10 @@ public class Sprite {
 	 
 	 public void draw(int x, int y){
 		// store the current model matrix
-		 System.out.println("Drawing!");
 			GL11.glPushMatrix();
 			
 			// bind to the appropriate texture for this sprite
-			System.out.println("Binding");
 			texture.bind();
-			System.out.println("Done Binding!");
 			
 			// translate to the right location and prepare to draw
 			GL11.glTranslatef(x, y, 0);		
