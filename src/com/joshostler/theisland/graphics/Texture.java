@@ -50,11 +50,6 @@ public class Texture {
      * @param gl The GL context to bind to
      */
     public void bind() {
-    	if (target == 0){
-    		System.out.println("Target is null!");
-    	} else if (textureID == 0){
-    		System.out.println("Target is null!");
-    	}
       GL11.glBindTexture(target, textureID); 
     }
     

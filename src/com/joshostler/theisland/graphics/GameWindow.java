@@ -7,21 +7,24 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
-import com.joshostler.theisland.graphics.tile.TileStone;
+import com.joshostler.maps.Map;
 
 public class GameWindow {
 	
 	private GameWindowCallback callback;
   
 	private boolean gameRunning = true;
-  
+ 
 	private int width;
-  
 	private int height;
+	public int offsetX = 200;
+	public int offsetY = 200;
 
 	private TextureLoader textureLoader;
   
 	private String title = "The Island";
+	
+	public Map gameMap;
 	
 	public GameWindow() {
 		try {
@@ -73,7 +76,6 @@ public class GameWindow {
 	
 	public void startRendering() throws LWJGLException {
 		setDisplayMode();
-		//Display.create();
 		
 		// grab the mouse, dont want that hideous cursor when we're playing!
 		Mouse.setGrabbed(true);
@@ -94,7 +96,7 @@ public class GameWindow {
 		if(callback != null) {
 			callback.initialise();
 		}
-    
+		    
 		gameLoop();
 	}
 
@@ -110,17 +112,43 @@ public class GameWindow {
 		int frames = 0;
 		int updates = 0;
 		
+		gameMap = new Map();
+		
 		while (gameRunning) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			if (delta >= 1) {
-				//this.update();
+				
+				// clear screen
+				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+				
+				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+					offsetX-=4;
+				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+					offsetX+=4;
+				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+					offsetY-=4;
+				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+					offsetY+=4;
+				GL11.glTranslatef(-offsetX, -offsetY, 0);
+				gameMap.render();
+				
+				GL11.glMatrixMode(GL11.GL_MODELVIEW);
+				GL11.glLoadIdentity();
+				
+				// let subsystem paint
+				if (callback != null) {
+					callback.frameRendering();
+				}
+				
+				// update window contents
+				Display.update();
+				
 				updates++;
 				delta--;
 			}
 			
-			//this.render();
 			frames++;
 
 			if (System.currentTimeMillis() - timer > 1000) {
@@ -130,21 +158,6 @@ public class GameWindow {
 				frames = 0;
 			}
 			
-			// clear screen
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glLoadIdentity();
-			
-			// let subsystem paint
-			if (callback != null) {
-				callback.frameRendering();
-			}
-			
-			TileStone tile = new TileStone(0,0);
-			tile.draw();
-			
-			// update window contents
-			Display.update();
 			
 			if(Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 				gameRunning = false;
