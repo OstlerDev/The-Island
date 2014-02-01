@@ -2,10 +2,10 @@ package com.joshostler.theisland.graphics.tile;
 
 import com.joshostler.entity.Entity;
 
-public class TileDirt extends Tile {
+public class TileSand extends Tile {
 
-	public TileDirt(int x, int y) {
-		super("res/tiles/dirt.png", x, y);
+	public TileSand(int x, int y) {
+		super("res/tiles/sand.png", x, y);
 	}
 
 	@Override

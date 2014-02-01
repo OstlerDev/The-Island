@@ -5,7 +5,11 @@ import java.util.Random;
 import com.joshostler.theisland.graphics.ResourceHandler;
 import com.joshostler.theisland.graphics.tile.Tile;
 import com.joshostler.theisland.graphics.tile.TileDirt;
+import com.joshostler.theisland.graphics.tile.TileGrass;
+import com.joshostler.theisland.graphics.tile.TileSand;
+import com.joshostler.theisland.graphics.tile.TileSnow;
 import com.joshostler.theisland.graphics.tile.TileStone;
+import com.joshostler.theisland.graphics.tile.TileWater;
 
 public class Map {
 	
@@ -15,22 +19,30 @@ public class Map {
 	int height;
 
 	public Map(){
-		width = 500;
-		height = 500;
+		width = 250;
+		height = 250;
 		
 		mapTiles = new Tile[width][height];
 		
 		float[][] baseNoise = generateWhiteNoise(width, height);
-		mapFloats = GeneratePerlinNoise(baseNoise, 4);
+		mapFloats = GeneratePerlinNoise(baseNoise, 6);
 		
 		for(int i = 0; i < width; i++){
 			for (int j = 0; j < height; j++){
 				System.out.println("Current Height: " + j + "; Current Width: " + i + "; Float at that location: " + mapFloats[i][j]);
 				System.out.println("Assigning Tile a value!");
-				if (mapFloats[i][j] < 0.5){
+				if (mapFloats[i][j] <= 0.2){
+					mapTiles[i][j] = new TileWater(i*16,j*16);
+				} else if (mapFloats[i][j] > 0.2 && mapFloats[i][j] <= 0.3){
+					mapTiles[i][j] = new TileSand(i*16,j*16);
+				} else if (mapFloats[i][j] > 0.3 && mapFloats[i][j] <= 0.6){
+					mapTiles[i][j] = new TileGrass(i*16,j*16);
+				} else if (mapFloats[i][j] > 0.6 && mapFloats[i][j] <= 0.7){
 					mapTiles[i][j] = new TileDirt(i*16,j*16);
-				} else {
+				} else if (mapFloats[i][j] > 0.7 && mapFloats[i][j] <= 0.85){
 					mapTiles[i][j] = new TileStone(i*16,j*16);
+				} else {
+					mapTiles[i][j] = new TileSnow(i*16,j*16);
 				}
 			}
 		}
@@ -38,7 +50,7 @@ public class Map {
 	
 	public float[][] generateWhiteNoise(int width, int height)
 	{
-	    Random random = new Random(); //Seed to 0 for testing
+	    Random random = new Random(0); //Seed to 0 for testing
 	    float[][] noise = new float[width][height];
 	 
 	    for (int i = 0; i < width; i++)
@@ -155,8 +167,12 @@ public class Map {
 					int x = mapTiles[i][j].getX();
 					int offsetY = ResourceHandler.get().getGameWindow().offsetY;
 					int y = mapTiles[i][j].getY();
-					if (x+17 > offsetX && x-1 < 1200+offsetX)
-						if (y+17 > offsetY && y-1 < 700+offsetY)
+					
+					int screenWidth = ResourceHandler.get().getGameWindow().getWidth();
+					int screenHeight = ResourceHandler.get().getGameWindow().getHeight();
+					
+					if (x+17 > offsetX && x-1 < screenWidth+offsetX)
+						if (y+17 > offsetY && y-1 < screenHeight+offsetY)
 							mapTiles[i][j].draw();
 				}
 			}

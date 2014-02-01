@@ -17,8 +17,8 @@ public class GameWindow {
  
 	private int width;
 	private int height;
-	public int offsetX = 200;
-	public int offsetY = 200;
+	public int offsetX = 0;
+	public int offsetY = 0;
 
 	private TextureLoader textureLoader;
   
@@ -50,6 +50,14 @@ public class GameWindow {
 		height = y;
 	}
 	
+	public int getHeight(){
+		return height;
+	}
+	
+	public int getWidth(){
+		return width;
+	}
+	
 	private boolean setDisplayMode() {
 		try {
 			// get modes
@@ -78,7 +86,7 @@ public class GameWindow {
 		setDisplayMode();
 		
 		// grab the mouse, dont want that hideous cursor when we're playing!
-		Mouse.setGrabbed(true);
+		//Mouse.setGrabbed(true);
   
 		// enable textures since we're going to use these for our sprites
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -120,35 +128,11 @@ public class GameWindow {
 			lastTime = now;
 			if (delta >= 1) {
 				
-				// clear screen
-				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-				
-				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-					offsetX-=4;
-				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-					offsetX+=4;
-				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-					offsetY-=4;
-				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-					offsetY+=4;
-				GL11.glTranslatef(-offsetX, -offsetY, 0);
-				gameMap.render();
-				
-				GL11.glMatrixMode(GL11.GL_MODELVIEW);
-				GL11.glLoadIdentity();
-				
-				// let subsystem paint
-				if (callback != null) {
-					callback.frameRendering();
-				}
-				
-				// update window contents
-				Display.update();
-				
 				updates++;
 				delta--;
 			}
 			
+			renderGraphics();
 			frames++;
 
 			if (System.currentTimeMillis() - timer > 1000) {
@@ -165,6 +149,34 @@ public class GameWindow {
 				callback.windowClosed();
 			}
 		}
+	}
+	
+	private void renderGraphics(){
+		// clear screen
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+			offsetX-=4;
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+			offsetX+=4;
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+			offsetY-=4;
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+			offsetY+=4;
+		GL11.glTranslatef(-offsetX, -offsetY, 0);
+		gameMap.render();
+		
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glLoadIdentity();
+		
+		// let subsystem paint
+		if (callback != null) {
+			callback.frameRendering();
+		}
+		
+		// update window contents
+		Display.update();
+		
 	}
 
 	public void destroy() {
