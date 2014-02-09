@@ -6,6 +6,7 @@ public class TileStone extends Tile {
 
 	public TileStone(int x, int y) {
 		super("res/tiles/stone.png", x, y);
+		tileType = Tiles.STONE;
 	}
 
 	@Override

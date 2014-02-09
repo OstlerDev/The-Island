@@ -6,6 +6,7 @@ public class TileSnow extends Tile {
 
 	public TileSnow(int x, int y) {
 		super("res/tiles/snow.png", x, y);
+		tileType = Tiles.SNOW;
 	}
 
 	@Override

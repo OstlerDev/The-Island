@@ -20,6 +20,12 @@ public abstract class Tile {
 	private Rectangle tile = new Rectangle();
 	private Rectangle player = new Rectangle();
 	
+	public enum Tiles {
+		GRASS, DIRT, SAND, SNOW, STONE, WATER
+	}
+	
+	protected Tiles tileType;
+	
 	public Tile(String ref, int x, int y) {
 		this.sprite = new Sprite(ResourceHandler.get().getGameWindow(), ref);
 		this.x = x;
@@ -36,6 +42,10 @@ public abstract class Tile {
 	
 	public int getY(){
 		return (int)y;
+	}
+	
+	public Tiles getTileType(){
+		return this.tileType;
 	}
 	
 	public boolean collidesWith(Tile other){
