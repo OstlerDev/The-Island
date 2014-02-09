@@ -6,6 +6,7 @@ public class TileGrass extends Tile {
 
 	public TileGrass(int x, int y) {
 		super("res/tiles/grass.png", x, y);
+		tileType = Tiles.GRASS;
 	}
 
 	@Override

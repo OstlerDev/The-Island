@@ -128,6 +128,14 @@ public class GameWindow {
 			lastTime = now;
 			if (delta >= 1) {
 				
+				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+					offsetX-=10;
+				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+					offsetX+=10;
+				if (Keyboard.isKeyDown(Keyboard.KEY_UP))
+					offsetY-=10;
+				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+					offsetY+=10;
 				updates++;
 				delta--;
 			}
@@ -155,14 +163,6 @@ public class GameWindow {
 		// clear screen
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-			offsetX-=4;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-			offsetX+=4;
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-			offsetY-=4;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-			offsetY+=4;
 		GL11.glTranslatef(-offsetX, -offsetY, 0);
 		gameMap.render();
 		
