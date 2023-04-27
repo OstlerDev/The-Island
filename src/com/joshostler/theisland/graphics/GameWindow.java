@@ -6,6 +6,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import com.joshostler.theisland.graphics.TextureLoader;
 
 import com.joshostler.maps.Map;
 

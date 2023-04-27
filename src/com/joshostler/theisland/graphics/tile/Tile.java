@@ -6,7 +6,6 @@ package com.joshostler.theisland.graphics.tile;
 import java.awt.Rectangle;
 
 import com.joshostler.entity.Entity;
-import com.joshostler.theisland.TheIsland;
 import com.joshostler.theisland.graphics.ResourceHandler;
 import com.joshostler.theisland.graphics.Sprite;
 
