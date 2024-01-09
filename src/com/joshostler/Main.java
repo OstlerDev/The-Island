@@ -19,6 +19,8 @@ public class Main {
 			ex.printStackTrace();
 			System.exit(2); //All other exceptions
 		}
-		//exit naturally with process
-	}
+		finally
+  {
+     System.exit(0);
+	 }
 }
